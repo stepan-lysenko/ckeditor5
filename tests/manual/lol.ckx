@@ -44,16 +44,13 @@ function LOL( editor ) {
 	editor.conversion.for( 'downcast' ).elementToElement( {
 		model: 'lol',
 		view: ( modelElement, { writer } ) => {
-			return <div class="lol foo bar baz" style="background:blue;" data-foo={ modelElement.getAttribute( 'foo' ) }>
+			return <div class="lol foo bar baz" style="background:blue;color:white;" data-foo={ modelElement.getAttribute( 'foo' ) }>
 				Foo bar
-				<div class="inner-lol"><strong>LOL, it works!</strong></div>
+				<div class="inner-lol">
+					<strong>LOL, it works!</strong>
+				</div>
 			</div>;
-		},
-		triggerBy: [
-			'attribute:meta:box',
-			'insert:boxField',
-			'remove:boxField'
-		]
+		}
 	} );
 }
 
