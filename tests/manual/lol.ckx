@@ -2,6 +2,29 @@
  * JSX LOL plugin.
  * @param editor
  * @constructor
+ *
+ * This requires babel plugins in webpack config:
+ *	{
+ *		test: /\.ckx$/,
+ *		use: {
+ *			loader: 'babel-loader',
+ *			options: {
+ *				plugins: [
+ *					'@babel/plugin-syntax-jsx',
+ *					[
+ *						'@babel/plugin-transform-react-jsx',
+ *						{
+ *							runtime: 'classic',
+ *							pragma: 'writer.createNestedElement',
+ *							pragmaFrag: '"DocumentFragment"'
+ *						}
+ *					]
+ *				]
+ *			}
+ *		}
+ *	}
+ *
+ * with mentioned plugins to be installed. Pragma fragment is not added.
  */
 function LOL( editor ) {
 	editor.model.schema.register( 'lol', {
