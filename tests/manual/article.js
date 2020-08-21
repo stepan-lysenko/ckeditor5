@@ -8,6 +8,7 @@
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import ArticlePluginSet from '@ckeditor/ckeditor5-core/tests/_utils/articlepluginset';
 import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
+import LOL from './lol.ckx';
 
 const byClassName = className => element => element.hasClass( className );
 
@@ -90,7 +91,7 @@ function downcastBox( modelElement, conversionApi ) {
 	const { writer } = conversionApi;
 
 	const viewBox = writer.createContainerElement( 'div', { class: 'box' } );
-	conversionApi.mapper.bindElements( modelElement, viewBox );
+	// conversionApi.mapper.bindElements( modelElement, viewBox );
 
 	const contentWrap = writer.createContainerElement( 'div', { class: 'box-content' } );
 	writer.insert( writer.createPositionAt( viewBox, 0 ), contentWrap );
@@ -232,7 +233,7 @@ function Box( editor ) {
 
 ClassicEditor
 	.create( document.querySelector( '#editor' ), {
-		plugins: [ ArticlePluginSet, Box ],
+		plugins: [ ArticlePluginSet, Box, LOL ],
 		toolbar: [
 			'heading',
 			'|',

@@ -91,7 +91,7 @@ export default class DowncastWriter {
 	 *		writer.setSelection( paragraph, offset );
 	 *
 	 * Creates a range inside an {@link module:engine/view/element~Element element} which starts before the first child of
- 	 * that element and ends after the last child of that element.
+	 * that element and ends after the last child of that element.
 	 *
 	 * 		writer.setSelection( paragraph, 'in' );
 	 *
@@ -152,6 +152,20 @@ export default class DowncastWriter {
 	 */
 	createText( data ) {
 		return new Text( this.document, data );
+	}
+
+	createNestedElement( name, attributes, ...children ) {
+		const parent = this.createContainerElement( name, attributes );
+
+		for ( const child of children ) {
+			if ( typeof child === 'string' ) {
+				this.insert( this.createPositionAt( parent, 'end' ), this.createText( child ) );
+			} else {
+				this.insert( this.createPositionAt( parent, 'end' ), child );
+			}
+		}
+
+		return parent;
 	}
 
 	/**
@@ -1158,11 +1172,11 @@ export default class DowncastWriter {
 			if ( isAttribute && this._wrapAttributeElement( wrapElement, child ) ) {
 				wrapPositions.push( new Position( parent, i ) );
 			}
-			//
-			// Wrap the child if it is not an attribute element or if it is an attribute element that should be inside
-			// `wrapElement` (due to priority).
-			//
-			// <p>abc</p>                   -->  <p><span class="foo">abc</span></p>
+				//
+				// Wrap the child if it is not an attribute element or if it is an attribute element that should be inside
+				// `wrapElement` (due to priority).
+				//
+				// <p>abc</p>                   -->  <p><span class="foo">abc</span></p>
 			// <p><strong>abc</strong></p>  -->  <p><span class="foo"><strong>abc</strong></span></p>
 			else if ( isText || isEmpty || isUI || isRaw || ( isAttribute && shouldABeOutsideB( wrapElement, child ) ) ) {
 				// Clone attribute.
@@ -1177,10 +1191,10 @@ export default class DowncastWriter {
 
 				wrapPositions.push( new Position( parent, i ) );
 			}
-			//
-			// If other nested attribute is found and it wasn't wrapped (see above), continue wrapping inside it.
-			//
-			// <p><a href="foo.html">abc</a></p>  -->  <p><a href="foo.html"><span class="foo">abc</span></a></p>
+				//
+				// If other nested attribute is found and it wasn't wrapped (see above), continue wrapping inside it.
+				//
+				// <p><a href="foo.html">abc</a></p>  -->  <p><a href="foo.html"><span class="foo">abc</span></a></p>
 			//
 			else if ( isAttribute ) {
 				this._wrapChildren( child, 0, child.childCount, wrapElement );
@@ -1652,9 +1666,9 @@ export default class DowncastWriter {
 
 				return this._breakAttributes( newPosition, forceSplitText );
 			}
-			// <p>foo<b><u>b{}ar</u></b></p>
-			// <p>foo<b><u>b[]ar</u></b></p>
-			// <p>foo<b><u>b</u>[]<u>ar</u></b></p>
+				// <p>foo<b><u>b{}ar</u></b></p>
+				// <p>foo<b><u>b[]ar</u></b></p>
+				// <p>foo<b><u>b</u>[]<u>ar</u></b></p>
 			// <p>foo<b><u>b</u></b>[]<b><u>ar</u></b></p>
 			else {
 				const offsetAfter = positionParent.index + 1;

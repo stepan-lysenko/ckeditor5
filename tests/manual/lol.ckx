@@ -1,0 +1,37 @@
+/**
+ * JSX LOL plugin.
+ * @param editor
+ * @constructor
+ */
+function LOL( editor ) {
+	editor.model.schema.register( 'lol', {
+		allowIn: '$root',
+		isObject: true,
+		isSelectable: true
+	} );
+
+	editor.conversion.for( 'upcast' ).elementToElement( {
+		view: {
+			name: 'div',
+			classes: 'lol'
+		},
+		model: 'lol'
+	} );
+
+	editor.conversion.for( 'downcast' ).elementToElement( {
+		model: 'lol',
+		view: ( modelElement, { writer } ) => {
+			return <div class="lol foo bar baz" style="background:blue;" data-foo={ modelElement.getAttribute( 'foo' ) }>
+				Foo bar
+				<div class="inner-lol"><strong>LOL, it works!</strong></div>
+			</div>;
+		},
+		triggerBy: [
+			'attribute:meta:box',
+			'insert:boxField',
+			'remove:boxField'
+		]
+	} );
+}
+
+export default LOL;
